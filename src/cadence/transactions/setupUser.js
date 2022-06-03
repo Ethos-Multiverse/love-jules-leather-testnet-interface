@@ -8,6 +8,8 @@ transaction {
 
     // Create a public link to users collection
     acct.link<&LoveJulesLeather.Collection{LoveJulesLeather.CollectionPublic}>(/public/LoveJulesLeather, target: /storage/LoveJulesLeatherCollection )
+
+    acct.link<&LoveJulesLeather.Collection>(/private/LoveJulesLeather, target: /storage/LoveJulesLeatherCollection)
   }
 
   execute {
