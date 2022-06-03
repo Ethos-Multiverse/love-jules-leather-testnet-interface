@@ -1,4 +1,4 @@
-export const mintNFT = `
+export const mintNftTx = `
 import LoveJulesLeather from 0xLoveJulesLeather
 
 transaction {

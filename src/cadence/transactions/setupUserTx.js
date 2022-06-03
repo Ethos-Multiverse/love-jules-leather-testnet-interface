@@ -1,4 +1,4 @@
-export const setupUser = `
+export const setupUserTx = `
 import LoveJulesLeather from 0xLoveJulesLeather
 
 transaction {
