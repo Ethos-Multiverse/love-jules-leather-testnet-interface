@@ -6,9 +6,14 @@ import { setupUserTx } from "./cadence/transactions/setupUserTx";
 import useLocalStorage from "use-local-storage";
 import Collection from "./components/Collection";
 
+const metadata = {
+  name: "LoveJulesLeatherV1",
+  ipfsHash: "QmSNpzoJsYaqGybdVKtRpynRaGGKJYkLYVXcBKyyApvbeN"
+}
+
 function App() {
   const [user, setUser] = useState();
-  const [transactionStatus, setTransactionStatus] = useState();
+  const [transactionStatus, setTransactionStatus] = useState("---");
   const [isSetup, setIsSetup] = useLocalStorage("isSetup", 0);
 
   // Update user on page load
@@ -19,7 +24,7 @@ function App() {
     console.log("Minting...");
     const transactionId = await fcl.mutate({
       cadence: mintNftTx,
-      args: (arg, t) => [],
+      args: (arg, t) => [arg(metadata.ipfsHash, t.String), arg(metadata.name, t.String)],
       payer: fcl.authz,
       proposer: fcl.authz,
       proposer: fcl.authz,
@@ -122,9 +127,9 @@ function App() {
             </div>
           </div>
           {/* List NFTs in Wallet */}
-          {user && user.addr ? (
+          {/* {user && user.addr ? (
             <Collection address={user?.addr}></Collection>
-          ) : null}
+          ) : null} */}
         </div>
       </>
     );
