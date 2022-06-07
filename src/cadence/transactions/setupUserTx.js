@@ -9,7 +9,7 @@ transaction {
 
   prepare(acct: AuthAccount) {
     acct.save(<- LoveJulesLeatherV1.createEmptyCollection(), to: /storage/LoveJulesLeatherV1Collection)
-    acct.link<&LoveJulesLeatherV1.Collection{LoveJulesLeatherV1.CollectionPublic, NonFungibleToken.CollectionPublic}>(/public/LoveJulesLeatherV1Collection, target: /storage/LoveJulesLeatherCollection)
+    acct.link<&LoveJulesLeatherV1.Collection{LoveJulesLeatherV1.CollectionPublic, NonFungibleToken.CollectionPublic}>(/public/LoveJulesLeatherV1Collection, target: /storage/LoveJulesLeatherV1Collection)
     acct.link<&LoveJulesLeatherV1.Collection>(/private/LoveJulesLeatherV1Collection, target: /storage/LoveJulesLeatherV1Collection)
     
     let MyNFTCollection = acct.getCapability<&LoveJulesLeatherV1.Collection>(/private/LoveJulesLeatherCollection)
@@ -20,7 +20,7 @@ transaction {
   }
 
   execute {
-    log("A user stored a Collection and a SaleCollection inside their account")
+    log("A user stored a LoveJulesLeatherV1 Collection and a LoveJulesLeatherSaleCollection inside their account")
   }
 }
 

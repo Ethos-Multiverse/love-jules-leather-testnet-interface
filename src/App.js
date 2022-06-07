@@ -29,7 +29,7 @@ function App() {
       proposer: fcl.authz,
       proposer: fcl.authz,
       authorizations: [fcl.authz],
-      limit: 50,
+      limit: 9999,
     });
 
     console.log("transactionId: ", transactionId);
@@ -48,7 +48,7 @@ function App() {
       proposer: fcl.authz,
       proposer: fcl.authz,
       authorizations: [fcl.authz],
-      limit: 50,
+      limit: 9999,
     });
 
     console.log("transactionId: ", transactionId);
@@ -127,9 +127,9 @@ function App() {
             </div>
           </div>
           {/* List NFTs in Wallet */}
-          {/* {user && user.addr ? (
+          {user && user.addr ? (
             <Collection address={user?.addr}></Collection>
-          ) : null} */}
+          ) : null}
         </div>
       </>
     );
