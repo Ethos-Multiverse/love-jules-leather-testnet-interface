@@ -14,7 +14,7 @@ const metadata = {
 function App() {
   const [user, setUser] = useState();
   const [transactionStatus, setTransactionStatus] = useState("---");
-  const [isSetup, setIsSetup] = useLocalStorage("isSetup", 0);
+  const [isSetup, setIsSetup] = useState(false);
   const [flowBalance, setFlowBalance] = useState(0);
 
   console.log("fcl", fcl);
@@ -106,47 +106,71 @@ function App() {
           <h1 className="text-4xl font-semibold mb-8">
             Love Jules Minting dApp
           </h1>
-          {/* Total Supply */}
-          <p>
-            Flow Balance: {flowBalance} <br />
-            Contract: --- <br />
-            Tokens minted: ---
-            <br />
-            Contract value: ---
-            <br />
-            Transaction Status: {transactionStatus}
-          </p>
+          {/* Metrics */}
+          <div>
+            <p className="flex">
+              Contract:{" "}
+              <a
+                href="https://testnet.flowscan.org/contract/A.d8144e7c81e68eb9.LoveJulesLeatherV1"
+                target="_blank"
+              >
+                {" "}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </a>
+            </p>
+            <p>Flow Balance: ---</p>
+            <p>Tokens Minted: ---</p>
+            <p>Contract Value: ---</p>
+            <p>Transaction Status: {transactionStatus}</p>
+          </div>
 
           {/* Mint NFT */}
           <div className="space-y-8">
             <div className="bg-gray-100 p-4 lg:p-8">
-              <div>
+              <div className="text-center">
                 <h2 className="text-2xl font-semibold mb-2">Mint NFTs</h2>
                 <label className="text-gray-600 text-sm mb-2 inline-block">
-                  {true
+                  {isSetup
                     ? "Currently restricted to one NFT per mint"
                     : "You must send an approval transaction before minting"}
                 </label>
-                <div className="flex">
-                  <button
-                    className="mr-20 bg-blue-600 hover:bg-blue-700 text-white py-4 px-8 rounded-tr rounded-br rounded-tl rounded-bl w-1/3 "
-                    onClick={() => setupUser()}
-                  >
-                    {"Setup"}
-                  </button>
-                  <button
-                    className="bg-blue-600 hover:bg-blue-700 text-white py-4 px-8 rounded-tr rounded-br rounded-tl rounded-bl w-1/3 "
-                    onClick={() => mint()}
-                  >
-                    {"Mint"}
-                  </button>
+                <div className="flex justify-center">
+                  {isSetup ? (
+                    <button
+                      className="bg-blue-600 hover:bg-blue-700 text-white py-4 px-8 rounded-tr rounded-br rounded-tl rounded-bl w-1/3 "
+                      onClick={() => mint()}
+                    >
+                      {"Mint"}
+                    </button>
+                  ) : (
+                    <button
+                      className="mr-20 bg-blue-600 hover:bg-blue-700 text-white py-4 px-8 rounded-tr rounded-br rounded-tl rounded-bl w-1/3 "
+                      onClick={() => setupUser()}
+                    >
+                      {"Setup"}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
           </div>
           {/* List NFTs in Wallet */}
           {user && user.addr ? (
-            <Collection address={user?.addr}></Collection>
+            <Collection
+              address={user?.addr}
+              setIsSetup={setIsSetup}
+            ></Collection>
           ) : null}
         </div>
       </>
