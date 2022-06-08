@@ -8,23 +8,39 @@ import Collection from "./components/Collection";
 
 const metadata = {
   name: "LoveJulesLeatherV1",
-  ipfsHash: "QmSNpzoJsYaqGybdVKtRpynRaGGKJYkLYVXcBKyyApvbeN"
-}
+  ipfsHash: "QmSNpzoJsYaqGybdVKtRpynRaGGKJYkLYVXcBKyyApvbeN",
+};
 
 function App() {
   const [user, setUser] = useState();
   const [transactionStatus, setTransactionStatus] = useState("---");
   const [isSetup, setIsSetup] = useLocalStorage("isSetup", 0);
+  const [flowBalance, setFlowBalance] = useState(0);
+
+  console.log("fcl", fcl);
 
   // Update user on page load
-  useEffect(() => fcl.currentUser.subscribe(setUser), []);
+  useEffect(() => {
+    fcl.currentUser.subscribe(setUser);
+  }, []);
+
+  // Set Flow balance
+  const getFlowBalance = async () => {
+    const result = await fcl.account(user?.addr).then((d) => {
+      return fcl.decode(d.balance);
+    });
+    console.log("flowBalance", flowBalance);
+  };
 
   // Mint NFT
   const mint = async () => {
     console.log("Minting...");
     const transactionId = await fcl.mutate({
       cadence: mintNftTx,
-      args: (arg, t) => [arg(metadata.ipfsHash, t.String), arg(metadata.name, t.String)],
+      args: (arg, t) => [
+        arg(metadata.ipfsHash, t.String),
+        arg(metadata.name, t.String),
+      ],
       payer: fcl.authz,
       proposer: fcl.authz,
       proposer: fcl.authz,
@@ -37,7 +53,7 @@ function App() {
     fcl.tx(transactionId).subscribe((res) => setTransactionStatus(res.status));
 
     return fcl.tx(transactionId).onceSealed();
-  }
+  };
 
   // Setup user
   const setupUser = async () => {
@@ -53,17 +69,16 @@ function App() {
 
     console.log("transactionId: ", transactionId);
 
-    fcl
-      .tx(transactionId)
-      .subscribe((res) => {
-        setTransactionStatus(res.status);
-        setIsSetup(res.status);
-      });
+    fcl.tx(transactionId).subscribe((res) => {
+      setTransactionStatus(res.status);
+      setIsSetup(res.status);
+    });
     return fcl.tx(transactionId).onceSealed();
-  }
+  };
 
   // Authenticated in user
   const AuthedState = () => {
+    getFlowBalance();
     // setMessage(user.addr);
     return (
       <>
@@ -81,7 +96,9 @@ function App() {
             }
             {user.addr}
           </button>
-          <button className="" onClick={fcl.unauthenticate}>Disconnect</button>
+          <button className="" onClick={fcl.unauthenticate}>
+            Disconnect
+          </button>
         </div>
 
         {/* Main page */}
@@ -91,10 +108,11 @@ function App() {
           </h1>
           {/* Total Supply */}
           <p>
-            Contract: <br />
-            Tokens minted: 0/100
+            Flow Balance: {flowBalance} <br />
+            Contract: --- <br />
+            Tokens minted: ---
             <br />
-            Contract value: 0 Flow
+            Contract value: ---
             <br />
             Transaction Status: {transactionStatus}
           </p>

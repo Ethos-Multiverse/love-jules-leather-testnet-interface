@@ -10,8 +10,8 @@ function Collection({ address }) {
 
   // Get NFT collection when page loads
   useEffect(() => { 
-    getUserNFTs();
-  }, [nfts]);
+      getUserNFTs();
+  }, []);
 
   const getUserNFTs = async () => {
     const result = await fcl.send([
