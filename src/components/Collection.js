@@ -4,7 +4,7 @@ import { getNodeText } from "@testing-library/react";
 import { useState, useEffect } from "react";
 import { getNFTs } from "../cadence/transactions/scripts/getNfts";
 
-function Collection({ address }) {
+function Collection({ address, setIsSetup }) {
   console.log('address', address);
   const [nfts, setNFTs] = useState([]);
 
@@ -26,6 +26,11 @@ function Collection({ address }) {
 }
 
   if(nfts.length < 1 ) return null;
+
+  if (nfts.length >= 0) {
+    setIsSetup(true);
+  }
+
 
   return (
     <>
